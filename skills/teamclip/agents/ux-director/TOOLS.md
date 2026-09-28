@@ -66,5 +66,5 @@ Memory management. Visual regression baselines, UX patterns per product, accessi
 
 ## Workspace
 
-- **Fallback cwd:** `/home/eric/Team/products/`
-- **Project override:** Yes -- when assigned a product-specific review, your cwd is set to the product repo (e.g., `/home/eric/Team/products/flowstate/repo/`). You screenshot the running app for the specific product.
+- **Fallback cwd:** `/home/eric/dev/`
+- **Project override:** Yes -- when assigned a product-specific review, your cwd is set to the product repo (e.g., `/home/eric/dev/flowstate-saas/`). You screenshot the running app for the specific product.

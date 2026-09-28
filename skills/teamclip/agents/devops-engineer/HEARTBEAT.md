@@ -72,24 +72,10 @@ When provisioning or modifying infrastructure:
 4. Submit for Architect review before applying to production.
 
 ### Security Tasks
-When performing security audits or fixes:
-
-1. Run dependency vulnerability scans.
-2. Check for secrets in code (git history included).
-3. Review authentication and authorization implementation.
-4. Check OWASP Top 10 compliance.
-5. Document findings as issues with severity and remediation steps.
+Run dependency scans, check for secrets in code/history, review auth implementation, check OWASP Top 10. Document findings as issues with severity and remediation.
 
 ### Incident Response
-When woken for an incident:
-
-Follow: DETECT -> TRIAGE -> MITIGATE -> RESOLVE -> POSTMORTEM
-
-1. **Detect:** What's the symptom? What's the scope?
-2. **Triage:** Severity (P0-P3). Who needs to know? Alert CTO and relevant agents.
-3. **Mitigate:** Can you restore service? Rollback? Failover? Feature flag?
-4. **Resolve:** Fix the root cause. Deploy the fix through the normal pipeline (expedited review).
-5. **Postmortem:** Create an incident postmortem issue. Document timeline, root cause, remediation, prevention.
+DETECT (symptom, scope) -> TRIAGE (P0-P3, alert CTO) -> MITIGATE (rollback/failover/feature flag) -> RESOLVE (fix via normal pipeline) -> POSTMORTEM (issue with timeline, root cause, prevention).
 
 ## 3. Handoff Check
 
@@ -120,3 +106,14 @@ Before closing any task:
 - Always have a rollback plan before deploying.
 - Always deploy to staging before production.
 - Infrastructure changes require Architect review before production application.
+
+## CEO Action Escalation
+
+If you are blocked on something only Eric (Human CEO) can resolve — account access, credentials, budget approval, strategic decisions — follow the process in `processes/ceo-action-escalation.md`:
+
+1. Create an issue titled `[Eric Action Required] {specific action}` assigned to Eric with label `ceo-action`
+2. Use the standard description format: What is blocked → Steps required → What unblocks → Urgency
+3. Comment on all blocked issues linking to the CEO Action issue
+4. Notify the Chief of Staff so they can track it and send Discord alerts
+
+Do NOT wait silently when blocked on Eric. Create the issue immediately.

@@ -19,8 +19,14 @@ Eric (Human CEO)
 ├── Chief of Staff        — always-on orchestrator (30 min heartbeat)
 ├── CTO                   — technical strategy, architecture oversight
 │   ├── Architect         — system design, API design, code review
-│   ├── Full-Stack Engineer — frontend + backend implementation
-│   ├── QA Engineer       — testing, quality, bug reproduction
+│   ├── Full-Stack Engineer — cross-project floater, complex integrations
+│   ├── TaskKnife Engineer — dedicated TaskKnife/FlowState SaaS development
+│   ├── IHAB Engineer     — dedicated IHAB development
+│   ├── Resy Engineer     — dedicated Resy development
+│   ├── QA Engineer       — QA Lead, milestone-level testing coordination
+│   │   ├── TaskKnife QA  — dedicated TaskKnife QA at milestone boundaries
+│   │   ├── IHAB QA       — dedicated IHAB QA at milestone boundaries
+│   │   └── Resy QA       — dedicated Resy QA at milestone boundaries
 │   ├── DevOps Engineer   — infra, CI/CD, security, deploys
 │   └── UX Director       — visual QA, UX flows, accessibility (Gemini adapter)
 ├── Product Manager       — PRDs, roadmap, prioritization
@@ -48,7 +54,9 @@ Each agent has a 4-doc directory at `skills/teamclip/agents/{name}/`:
 | `SOUL.md` | Personality, decision principles, quality bar, communication style |
 | `TOOLS.md` | Available MCP tools, adapter config, tool usage patterns |
 
-Agent directory names: `chief-of-staff`, `cto`, `architect`, `full-stack-engineer`, `qa-engineer`, `devops-engineer`, `ux-director`, `product-manager`, `design-lead`, `cmo`, `market-researcher`, `content-growth-lead`, `finance-analyst`, `legal-counsel`, `cs-lead`.
+Agent directory names: `chief-of-staff`, `cto`, `architect`, `full-stack-engineer`, `taskknife-engineer`, `ihab-engineer`, `resy-engineer`, `qa-engineer`, `taskknife-qa`, `ihab-qa`, `resy-qa`, `devops-engineer`, `ux-director`, `product-manager`, `design-lead`, `cmo`, `market-researcher`, `content-growth-lead`, `finance-analyst`, `legal-counsel`, `cs-lead`.
+
+Per-project engineers and QA agents inherit from the shared `full-stack-engineer` and `qa-engineer` doc patterns until they have their own agent doc directories.
 
 ### Process Docs
 
@@ -128,9 +136,15 @@ Gate templates with full checklists are in `templates/gates/`.
 
 | Reviewer | Reviews | Checks |
 |---|---|---|
-| QA Engineer | Full-Stack Engineer | Tests, edge cases, regression |
+| TaskKnife QA | TaskKnife Engineer | Tests, edge cases, regression |
+| IHAB QA | IHAB Engineer | Tests, edge cases, regression |
+| Resy QA | Resy Engineer | Tests, edge cases, regression |
+| QA Engineer | Full-Stack Engineer | Tests, edge cases, regression (cross-project) |
 | Architect | DevOps Engineer | Infra design, security posture |
 | Architect | Full-Stack Engineer | Architecture compliance, structural quality |
+| Architect | TaskKnife Engineer | Architecture compliance, structural quality |
+| Architect | IHAB Engineer | Architecture compliance, structural quality |
+| Architect | Resy Engineer | Architecture compliance, structural quality |
 | UX Director | Full-Stack Engineer | Visual QA, UX flows, accessibility |
 | UX Director | Content & Growth Lead | Landing pages, user-facing assets |
 | UX Director | CS Lead | Help center UX, onboarding flows |
@@ -141,17 +155,25 @@ Gate templates with full checklists are in `templates/gates/`.
 
 ## Workspace Configuration
 
-**Universal fallback cwd:** `/home/eric/Team/products/` — every agent lands here by default. No agent should ever land in the Paperclip server directory.
+**Universal fallback cwd:** `/home/eric/dev/` — every shared agent lands here by default. No agent should ever land in the Paperclip server directory.
 
-**Project workspace overrides** apply to execution agents (Architect, Full-Stack Engineer, QA, DevOps, UX Director, Design Lead, Content & Growth, CS Lead) when working tasks scoped to a specific product project. The task's project workspace injects the correct repo path.
+**Per-project engineers and QA** have project-specific cwds baked in. They never need workspace overrides — they always work in their product repo.
+
+| Project | Dedicated Engineer CWD | Dedicated QA CWD |
+|---|---|---|
+| TaskKnife v2 | `/home/eric/dev/flowstate-saas/` | `/home/eric/dev/flowstate-saas/` |
+| IHAB MVP | `/home/eric/dev/ihab/repo/ihab_mvp/` | `/home/eric/dev/ihab/repo/ihab_mvp/` |
+| Resy Beta | `/home/eric/dev/resy/repo/resy-tool/` | `/home/eric/dev/resy/repo/resy-tool/` |
+
+**Project workspace overrides** still apply to shared execution agents (Architect, Full-Stack Engineer, DevOps, UX Director, Design Lead, Content & Growth, CS Lead) when working tasks scoped to a specific product project. The task's project workspace injects the correct repo path.
 
 **Cross-product agents** (CoS, CTO, PM, CMO, Market Researcher, Finance, Legal) always use the fallback — they need visibility across all products.
 
-| Project | Workspace cwd |
+| Project | Shared Agent Workspace cwd |
 |---|---|
-| TaskKnife v2 | `/home/eric/Team/products/flowstate/repo/` |
-| TaskKnife GTM | `/home/eric/Team/products/flowstate/` |
-| IHAB MVP | `/home/eric/Team/products/ihab/repo/` |
-| Resy Beta | `/home/eric/Team/products/resy/repo/` |
+| TaskKnife v2 | `/home/eric/dev/flowstate-saas/` |
+| TaskKnife GTM | `/home/eric/dev/Team/products/flowstate/` |
+| IHAB MVP | `/home/eric/dev/ihab/` |
+| Resy Beta | `/home/eric/dev/resy/` |
 
 **Session continuity:** When assigning consecutive tasks to execution agents, prefer batching by product to minimize session restarts. Urgent cross-product work takes priority over batching.

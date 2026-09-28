@@ -449,6 +449,15 @@ export async function runChildProcess(
       delete rawMerged[key];
     }
 
+    // Strip npm/pnpm lifecycle env vars that leak when the Paperclip server
+    // is started via `pnpm dev`. These cause spawned CLI tools (especially
+    // Gemini CLI) to trigger npm rebuild/start instead of running normally.
+    for (const key of Object.keys(rawMerged)) {
+      if (key.startsWith("npm_") || key === "PNPM_SCRIPT_SRC_DIR" || key === "COREPACK_ENABLE_AUTO_PIN") {
+        delete rawMerged[key];
+      }
+    }
+
     const mergedEnv = ensurePathInEnv(rawMerged);
     void resolveSpawnTarget(command, args, opts.cwd, mergedEnv)
       .then((target) => {

@@ -64,6 +64,53 @@ Security research:
 - Security advisory monitoring
 - Vendor security documentation
 
+## Installed CLIs
+
+These are globally installed and authenticated on the host. Use them directly via Bash.
+
+### GitHub CLI (`gh`)
+Repository and CI/CD management. Authenticated as `ricslash`.
+- `gh repo list` / `gh repo view` — repo overview
+- `gh pr create` / `gh pr merge` / `gh pr list` — PR management
+- `gh run list` / `gh run view` / `gh run rerun` — CI/CD pipeline status
+- `gh secret set` / `gh variable set` — configure GitHub Actions secrets and variables
+- `gh release create` — create releases
+- `gh api` — direct GitHub API access for anything not covered by subcommands
+
+### Cloudflare CLI (`wrangler`)
+DNS, CDN, Workers, Pages, and domain management. Authenticated as `epciesielski@gmail.com`.
+- `wrangler pages` — manage Pages projects and deployments
+- `wrangler d1` — manage D1 databases
+- `wrangler r2` — manage R2 storage
+- `wrangler secret` — manage Worker secrets
+- `wrangler dns` — manage DNS records (use `wrangler dns list` / `wrangler dns create`)
+- `wrangler deploy` — deploy Workers
+
+### Google Cloud CLI (`gcloud`)
+GCP project management, IAM, Cloud Run, Firestore, etc. Authenticated as `epciesielski@gmail.com`.
+- `gcloud projects list` / `gcloud projects create` — project management
+- `gcloud services enable` — enable APIs
+- `gcloud iam service-accounts create` — service account management
+- `gcloud run deploy` — Cloud Run deployments
+- `gcloud firestore databases create` — Firestore setup
+- `gcloud auth configure-docker` — configure Docker for GCR/Artifact Registry
+
+### Firebase CLI (`firebase`)
+Firebase project management, hosting, Firestore rules, functions. Authenticated as `epciesielski@gmail.com`.
+- `firebase projects:list` — list projects
+- `firebase deploy` — deploy hosting, functions, rules, indexes
+- `firebase hosting:channel:deploy` — preview channel deployments
+- `firebase firestore:indexes` — manage Firestore indexes
+- `firebase emulators:start` — local emulator suite
+
+### Stripe CLI (`stripe`)
+Payment infrastructure management. Authenticated for account `acct_1TEV7fJn2cEY0lly`.
+- `stripe listen --forward-to` — forward webhook events to local/dev endpoints
+- `stripe trigger` — trigger test webhook events
+- `stripe products list` / `stripe prices list` — inspect catalog
+- `stripe customers list` — inspect customers
+- `stripe logs tail` — real-time API log streaming
+
 ## Skills
 
 ### `para-memory-files`
@@ -94,5 +141,5 @@ Memory management. Infrastructure decisions, incident postmortems, deploy runboo
 
 ## Workspace
 
-- **Fallback cwd:** `/home/eric/Team/products/`
-- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/Team/products/flowstate/repo/`). CI/CD configs and infra configs live in the product repo.
+- **Fallback cwd:** `/home/eric/dev/`
+- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/dev/flowstate-saas/`). CI/CD configs and infra configs live in the product repo.

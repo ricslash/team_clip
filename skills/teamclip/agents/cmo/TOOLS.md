@@ -39,7 +39,7 @@ Your primary coordination and delegation tool.
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - Marketing artifacts: `products/<product>/marketing/`
 - No project workspace override -- you work cross-product at the strategy layer.
 

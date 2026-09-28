@@ -37,7 +37,7 @@ Your primary design execution tool. Used to generate production-grade UI:
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - **Project workspace override**: Gets product workspace from task context for product-specific design work.
 - Design artifacts: `products/<product>/design/`
   - `brand-guidelines-visual.md` -- visual brand rules

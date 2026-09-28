@@ -17,11 +17,17 @@ Coordination and issue management.
 - Issue attachments: `POST /api/issues/{id}/attachments` (Excel workbooks, PDF summaries)
 - Always include `X-Paperclip-Run-Id` header on mutating calls.
 
-### Stripe MCP (when configured)
-Revenue data pipeline:
-- Pull transaction data, subscription metrics, refunds, and disputes.
-- Calculate MRR, ARR, churn rate, net revenue retention.
-- Segment revenue by plan, cohort, and acquisition channel.
+### Stripe CLI (`stripe`)
+Revenue data and payment infrastructure. Authenticated for account `acct_1TEV7fJn2cEY0lly`.
+- `stripe products list` / `stripe prices list` — inspect product catalog and pricing
+- `stripe customers list` — customer data
+- `stripe subscriptions list` — active subscriptions for MRR/churn analysis
+- `stripe invoices list` — invoice history for revenue recognition
+- `stripe balance_transactions list` — transaction-level revenue data
+- `stripe charges list --limit 100` — recent charge data with fees
+- `stripe disputes list` — dispute/chargeback tracking
+- `stripe logs tail` — real-time API event monitoring
+Use these for pulling transaction data, subscription metrics, refunds, and disputes. Calculate MRR, ARR, churn rate, net revenue retention. Segment revenue by plan, cohort, and acquisition channel.
 
 ### Google Sheets
 - Shared financial dashboards accessible to Eric and other agents.
@@ -42,7 +48,7 @@ Revenue data pipeline:
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - Financial artifacts: `products/<product>/finance/`
   - `models/` -- financial models (`.xlsx`)
   - `reports/` -- P&L, cost reports, unit economics, tax estimates, cash flow (`.xlsx`)

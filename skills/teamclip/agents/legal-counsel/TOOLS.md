@@ -38,7 +38,7 @@ Legal and regulatory research.
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - Legal artifacts: `products/<product>/legal/docs/`
   - `terms-of-service.md`
   - `privacy-policy.md`

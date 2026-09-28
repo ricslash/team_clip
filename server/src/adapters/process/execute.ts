@@ -10,7 +10,7 @@ import {
 } from "../utils.js";
 
 export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExecutionResult> {
-  const { runId, agent, config, onLog, onMeta } = ctx;
+  const { runId, agent, config, context, onLog, onMeta, authToken } = ctx;
   const command = asString(config.command, "");
   if (!command) throw new Error("Process adapter missing command");
 
@@ -18,8 +18,27 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
   const cwd = asString(config.cwd, process.cwd());
   const envConfig = parseObject(config.env);
   const env: Record<string, string> = { ...buildPaperclipEnv(agent) };
+  env.PAPERCLIP_RUN_ID = runId;
+
+  // Inject task context env vars (mirroring gemini_local/claude_local behavior)
+  const taskId =
+    (typeof context.taskId === "string" && context.taskId.trim()) ||
+    (typeof context.issueId === "string" && context.issueId.trim()) ||
+    null;
+  if (taskId) env.PAPERCLIP_TASK_ID = taskId;
+  const wakeReason = typeof context.wakeReason === "string" && context.wakeReason.trim();
+  if (wakeReason) env.PAPERCLIP_WAKE_REASON = wakeReason;
+  const wakeCommentId =
+    (typeof context.wakeCommentId === "string" && context.wakeCommentId.trim()) ||
+    (typeof context.commentId === "string" && context.commentId.trim()) ||
+    null;
+  if (wakeCommentId) env.PAPERCLIP_WAKE_COMMENT_ID = wakeCommentId;
+
   for (const [k, v] of Object.entries(envConfig)) {
     if (typeof v === "string") env[k] = v;
+  }
+  if (authToken && !env.PAPERCLIP_API_KEY) {
+    env.PAPERCLIP_API_KEY = authToken;
   }
 
   const timeoutSec = asNumber(config.timeoutSec, 0);

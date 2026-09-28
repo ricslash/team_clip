@@ -41,7 +41,7 @@ Used for SEO research and competitive content analysis.
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - **Project workspace override**: Gets product workspace from task context for product-specific content.
 - Marketing assets: `products/<product>/marketing/assets/`
   - `landing-pages/` -- HTML landing pages

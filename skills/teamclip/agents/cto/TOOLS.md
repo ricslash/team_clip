@@ -16,11 +16,20 @@ Key endpoints:
 Always include `X-Paperclip-Run-Id: $PAPERCLIP_RUN_ID` on mutating calls.
 
 ### GitHub CLI (`gh`)
-Repository oversight. You don't write code, but you:
+Repository oversight and infrastructure. Authenticated as `ricslash`. You don't write code, but you:
 - Review PR descriptions and architecture-level changes (`gh pr view`, `gh pr diff`)
 - Check CI status (`gh run list`, `gh run view`)
 - Review open issues and their labels (`gh issue list`)
 - Enforce branch protection and merge policies
+- Configure repository settings (`gh api repos/{owner}/{repo}/...`)
+- Manage GitHub Actions secrets/variables (`gh secret set`, `gh variable set`)
+
+### Google Cloud CLI (`gcloud`)
+GCP architecture oversight. Authenticated as `epciesielski@gmail.com`. Used for:
+- Reviewing project configurations (`gcloud projects list`, `gcloud services list`)
+- Architecture-level infra decisions (which services to enable, IAM policies)
+- Verifying production configurations align with architecture decisions
+- Creating projects and configuring OAuth (`gcloud projects create`, `gcloud auth configure-docker`)
 
 ### Atlassian (Jira)
 Cross-reference engineering backlog. Verify Paperclip issues align with Jira tickets. Read sprint status and velocity.
@@ -48,5 +57,5 @@ Memory management. Architecture decisions, technical context, team patterns.
 
 ## Workspace
 
-- **Fallback cwd:** `/home/eric/Team/products/`
+- **Fallback cwd:** `/home/eric/dev/`
 - **No project override.** You manage across all products. You read product repos when reviewing work but don't need to be rooted in one.

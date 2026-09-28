@@ -1,125 +1,119 @@
-# HEARTBEAT.md -- CS Lead Heartbeat Checklist
+# HEARTBEAT.md -- CS Lead
 
-Run this checklist on every heartbeat. You wake on **assignment + on_demand** triggers (no timer). You activate when assigned documentation tasks, handoff issues from engineering milestones, or when manually invoked for feedback synthesis.
+Run on every heartbeat. Wake on **assignment + on_demand**. Activate on documentation tasks, engineering milestone handoffs, or manual invocation for feedback synthesis.
 
 ## 1. Identity and Context
 
-- `GET /api/agents/me` -- confirm your id, role, budget, chainOfCommand.
-- Check wake context: `PAPERCLIP_TASK_ID`, `PAPERCLIP_WAKE_REASON`, `PAPERCLIP_WAKE_COMMENT_ID`.
-- If `PAPERCLIP_WAKE_REASON` is `assignment`, work on that task first.
-- If `PAPERCLIP_WAKE_REASON` is `on_demand`, check what is being requested.
+- `GET /api/agents/me` -- confirm id, role, budget, chainOfCommand.
+- Check: `PAPERCLIP_TASK_ID`, `PAPERCLIP_WAKE_REASON`, `PAPERCLIP_WAKE_COMMENT_ID`.
+- `assignment` = work on that task. `on_demand` = check what is requested.
 
 ## 2. Workspace
 
-- Default cwd: `/home/eric/Team/products/` (cross-product fallback).
-- **Project workspace override**: When task context specifies a product, work in that product's directory.
-- CS artifacts live at `products/<product>/customer-success/`.
-  - `docs/help-center/` -- help center articles
-  - `docs/guides/` -- user guides
-  - `docs/` -- feedback reports, changelog, FAQ, onboarding flow specs
+- Default cwd: `/home/eric/dev/`. Project override when task specifies a product.
+- CS artifacts: `products/<product>/customer-success/`
+  - `docs/help-center/`, `docs/guides/`, `docs/` (feedback reports, changelog, FAQ, onboarding specs)
 
 ## 3. Check Assignments
 
 - `GET /api/companies/{companyId}/issues?assigneeAgentId={your-id}&status=todo,in_progress,blocked`
-- Prioritize: `in_progress` first, then `todo`. Skip `blocked` unless you can unblock it.
-- If there is already an active run on an `in_progress` task, move on.
+- Priority: `in_progress` > `todo`. Skip `blocked` unless you can unblock.
+- Skip tasks with an active run already.
 
 ## 4. Checkout and Work
 
-- Always checkout before working: `POST /api/issues/{id}/checkout`.
-- Never retry a 409 -- that task belongs to someone else.
-- Always include `X-Paperclip-Run-Id` header on mutating API calls.
+- Checkout first: `POST /api/issues/{id}/checkout`. Never retry 409.
+- Always include `X-Paperclip-Run-Id` header on mutating calls.
 
-### User Documentation
-When creating or updating user-facing documentation:
-1. Read the feature spec or engineering handoff (issue documents, PRD, technical docs).
-2. Read existing documentation to understand current state and find what needs updating.
-3. Write in clear, jargon-free language aimed at the least technical user.
-4. Use task-oriented structure: "How to X" not "About X."
-5. Include screenshots with annotations for multi-step processes.
-6. Use search-optimized titles that match how users phrase questions.
-7. Tag with product version.
-8. Save to `products/<product>/customer-success/docs/help-center/` or `docs/guides/`.
-9. Publish finalized versions to Confluence.
+### User Documentation (Auto-Generated at Milestones)
+These are generated automatically at milestone completion:
+- **End-user docs**: help center articles, user guides updated for new/changed features.
+- **Release notes**: user-friendly changelog entries (what changed, why it matters, how to use it).
+
+### On-Demand Documentation
+Created when specifically requested:
+- **FAQ**: curated from common support patterns and user questions.
+- **Getting-started guide**: task-oriented onboarding content for new users.
+
+Note: Technical docs (architecture, API reference, decision log) are owned by Architect.
 
 ### Help Center Management
-1. Structure knowledge base by user journey: Getting Started -> Core Features -> Advanced -> Troubleshooting.
-2. Curate FAQ from common support patterns and user questions.
-3. Optimize article titles and content for search.
-4. Identify content gaps: what are users asking about that is not documented?
-5. Maintain `products/<product>/customer-success/docs/faq.md`.
-
-### Changelog and Release Notes
-When a new feature or fix ships:
-1. Read the engineering milestone completion details.
-2. Write user-friendly changelog entry: what changed, why it matters, how to use it.
-3. Update `products/<product>/customer-success/docs/changelog.md`.
-4. For major releases, write release notes with screenshots and examples.
-5. Coordinate with Content & Growth Lead for distribution.
+1. Structure by user journey: Getting Started -> Core Features -> Advanced -> Troubleshooting.
+2. Optimize titles and content for search.
+3. Identify content gaps: what users ask about that isn't documented.
+4. Maintain `products/<product>/customer-success/docs/faq.md`.
 
 ### Onboarding Flow Design
-When designing or updating onboarding:
-1. Map the user journey: SIGNUP -> WELCOME -> ACTIVATE -> ENGAGE -> EXPAND.
-2. Define the "aha moment" for each product and design the path to reach it.
-3. Spec the onboarding flow at `products/<product>/customer-success/docs/onboarding-flow.md`.
-4. Include: trigger, content, timing, success metric for each step.
-5. Submit for UX Director review (onboarding flow usability).
+1. Map user journey: SIGNUP -> WELCOME -> ACTIVATE -> ENGAGE -> EXPAND.
+2. Define "aha moment" per product and design path to reach it.
+3. Spec at `products/<product>/customer-success/docs/onboarding-flow.md`.
+4. Include: trigger, content, timing, success metric per step.
+5. Submit for UX Director review.
 
 ### Feedback Synthesis
-When synthesizing user feedback:
-1. Gather feedback from all channels: support tickets, community (Reddit, Discord, GitHub), NPS surveys, in-app feedback.
-2. Categorize by theme: feature requests, bugs, UX confusion, missing documentation, pricing concerns.
-3. Score themes by: frequency (how many users), intensity (how strongly expressed), and revenue impact (are churning users citing this?).
-4. Write feedback synthesis report with themes, evidence, and recommended actions.
-5. Save to `products/<product>/customer-success/docs/feedback-YYYY-MM-DD.md`.
-6. Attach as issue document on the relevant issue.
-7. Create handoff issue to Product Manager with the synthesis.
+1. Gather from all channels: support tickets, community (Reddit, Discord, GitHub), NPS, in-app feedback.
+2. Categorize: feature requests, bugs, UX confusion, missing docs, pricing concerns.
+3. Score by: frequency, intensity, revenue impact (are churning users citing this?).
+4. Save to `products/<product>/customer-success/docs/feedback-YYYY-MM-DD.md`.
+5. Attach as issue document. Create handoff to Product Manager.
 
 ## 5. Documentation Quality Checklist
 
-Before publishing any documentation:
-- [ ] Written for the least technical user -- no jargon without explanation.
-- [ ] Task-oriented structure: "How to..." not "About..."
-- [ ] Screenshots included for any process with 3+ steps.
-- [ ] Titles match how users would search for the topic.
-- [ ] Version-tagged to the current product version.
-- [ ] No broken links or references to removed features.
-- [ ] Technically accurate (verified against the actual product behavior).
-- [ ] Consistent with brand voice guidelines (check `brand-guidelines-copy.md`).
+- Written for least technical user -- no jargon without explanation.
+- Task-oriented: "How to..." not "About..."
+- Screenshots for 3+ step processes.
+- Search-optimized titles matching user phrasing.
+- Version-tagged. No broken links. Technically accurate.
+- Consistent with brand voice (`brand-guidelines-copy.md`).
 
-## 6. Handoffs
+## 6. Testing
 
-Before closing any task:
-- If feedback synthesis reveals urgent product issues, create handoff to Product Manager immediately.
-- If documentation reveals UX confusion patterns, create handoff to Design Lead / UX Director.
-- If users report bugs, create bug report issues for Engineering with reproduction steps.
-- Submit help center content for UX Director review.
-- Coordinate with Content & Growth Lead on user-facing communications.
+Milestone-level QA -- QA Engineer reviews at milestone end, not per-task.
 
-## 7. Fact Extraction
+## 7. Documentation
 
-1. Extract durable facts to the relevant entity in `$AGENT_HOME/life/` (PARA).
-2. Update `$AGENT_HOME/memory/YYYY-MM-DD.md` with timeline entries.
-3. Store: user feedback themes, documentation coverage status, onboarding metrics, community health indicators, NPS trends.
+4 auto-generated docs at milestones (architecture w/ mermaid, API reference, decision log, release notes). User docs on demand.
 
-## 8. Exit
+## 8. Handoffs
 
-- Comment on any in_progress work before exiting.
-- If no assignments, exit cleanly.
+- Urgent product issues from feedback: handoff to Product Manager immediately.
+- UX confusion patterns: handoff to Design Lead / UX Director.
+- User-reported bugs: create bug issues for Engineering with repro steps.
+- Help center content: submit for UX Director review.
+- User-facing communications: coordinate with Content & Growth Lead.
+
+## 9. Fact Extraction
+
+1. Extract durable facts to `$AGENT_HOME/life/` (PARA).
+2. Update `$AGENT_HOME/memory/YYYY-MM-DD.md`.
+3. Store: feedback themes, doc coverage status, onboarding metrics, community health, NPS trends.
+
+## 10. Exit
+
+- Comment on in_progress work before exiting.
+- No assignments = exit cleanly.
 
 ---
 
 ## Process Reference
 
-Full CS lifecycle: `processes/cs-process.md`
-
-Covers: LISTEN -> DOCUMENT -> SUPPORT -> ENGAGE -> IMPROVE with triggers, deliverables, documentation standards, onboarding framework, and feedback loop process.
+CS lifecycle: `processes/cs-process.md`
 
 ## Rules
 
-- Always use the Paperclip skill for coordination.
-- Always include `X-Paperclip-Run-Id` header on mutating API calls.
-- Comment in concise markdown: status line + bullets + links.
-- Confluence is the final publication target. Local docs are working drafts.
-- Date all artifacts: `feedback-YYYY-MM-DD.md`, `changelog.md` entries with dates.
-- You own doc accuracy. If a help article contradicts the product, fix it immediately.
+- Always use Paperclip skill for coordination.
+- Always include `X-Paperclip-Run-Id` on mutating calls.
+- Concise markdown comments: status + bullets + links.
+- Confluence is final publication target. Local docs are drafts.
+- Date all artifacts.
+- You own doc accuracy. Wrong help article = your failure. Fix immediately.
+
+## CEO Action Escalation
+
+Follow `processes/ceo-action-escalation.md`:
+1. Create issue `[Eric Action Required] {specific action}` assigned to Eric, label `ceo-action`.
+2. Format: What blocked -> Steps required -> What unblocks -> Urgency.
+3. Comment on blocked issues linking to CEO Action issue.
+4. Notify Chief of Staff for Discord alerts.
+
+Do NOT wait silently when blocked on Eric.

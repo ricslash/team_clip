@@ -60,5 +60,5 @@ Memory management. Recurring bug patterns, common edge cases, test strategy deci
 
 ## Workspace
 
-- **Fallback cwd:** `/home/eric/Team/products/`
-- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/Team/products/flowstate/repo/`). You need to run tests in the correct repo.
+- **Fallback cwd:** `/home/eric/dev/`
+- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/dev/flowstate-saas/`). You need to run tests in the correct repo.

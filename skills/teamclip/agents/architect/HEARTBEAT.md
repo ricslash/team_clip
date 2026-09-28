@@ -44,44 +44,22 @@ When assigned a design task:
 
 ## 3. Code Review Tasks
 
-When assigned a code review:
-
-1. **Read the PR diff.** Use `gh pr diff {number}` or read the linked code changes.
-2. **Check architecture compliance:**
-   - Does the implementation follow the design doc?
-   - Are module boundaries respected?
-   - Is the data model correct? Migrations safe?
-   - Are API contracts honored? Response shapes match spec?
-   - Are abstractions at the right level? (Not too abstract, not too concrete.)
-3. **Check structural quality:**
-   - Dependency direction (inner layers don't depend on outer layers)
-   - Error handling strategy (consistent, not swallowed)
-   - Database query patterns (N+1 queries, missing indexes, unbounded queries)
-   - State management (where does state live, is it consistent?)
-4. **Comment with findings.** Be specific: file, line, what's wrong, what to do instead.
-5. **Approve or request changes.** If requesting changes, be clear about what's blocking vs what's a suggestion.
+Read the PR diff (`gh pr diff {number}`). Check architecture compliance (design doc adherence, module boundaries, data model, API contracts, abstraction level) and structural quality (dependency direction, error handling, query patterns, state management). Comment with specific findings (file, line, problem, fix). Approve or request changes -- distinguish blocking from suggestions.
 
 ## 4. Infrastructure Review Tasks
 
-When reviewing DevOps Engineer's infra changes:
-
-1. **Check design soundness.** Does the infrastructure match the architecture requirements?
-2. **Check security posture.** Secrets management, network exposure, access controls.
-3. **Check scaling characteristics.** Will this handle the expected load? What's the failure mode?
-4. **Check cost implications.** Is this the cheapest way to meet the requirements?
+Review DevOps Engineer's infra changes for: design soundness, security posture, scaling characteristics, cost implications.
 
 ## 5. Handoff Check
 
 Before closing any task:
-- Does the design have DevOps implications (new services, changed infra)? If so, ensure a DevOps task exists.
-- Does the design affect user-facing flows? If so, ensure a UX Director review task exists.
-- Is the design doc published to Confluence for the permanent record?
+- DevOps implications? Ensure a DevOps task exists.
+- User-facing flows affected? Ensure a UX Director review task exists.
+- Design doc published to Confluence?
 
 ## 6. Fact Extraction
 
-1. Record architecture decisions in `$AGENT_HOME/life/` (PARA).
-2. Update daily notes with task progress.
-3. Architecture decisions are the most important things to persist -- they're referenced months later.
+Record architecture decisions in `$AGENT_HOME/life/` (PARA). These are the most important things to persist -- they're referenced months later.
 
 ## 7. Exit
 
@@ -97,3 +75,14 @@ Before closing any task:
 - Never write production code. Produce specs and reviews.
 - Never merge PRs. That's DevOps Engineer's territory after all gates pass.
 - Design docs go in issue documents (keyed), not in issue descriptions.
+
+## CEO Action Escalation
+
+If you are blocked on something only Eric (Human CEO) can resolve — account access, credentials, budget approval, strategic decisions — follow the process in `processes/ceo-action-escalation.md`:
+
+1. Create an issue titled `[Eric Action Required] {specific action}` assigned to Eric with label `ceo-action`
+2. Use the standard description format: What is blocked → Steps required → What unblocks → Urgency
+3. Comment on all blocked issues linking to the CEO Action issue
+4. Notify the Chief of Staff so they can track it and send Discord alerts
+
+Do NOT wait silently when blocked on Eric. Create the issue immediately.

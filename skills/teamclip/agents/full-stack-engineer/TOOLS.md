@@ -22,12 +22,26 @@ Your primary code intelligence tool. Real-time type checking, go-to-definition, 
 - Pyright: strict mode for Python, enforce type hints
 
 ### GitHub CLI (`gh`)
-Your code submission workflow:
+Your code submission workflow. Authenticated as `ricslash`.
 - `gh pr create` -- create pull requests with title, body, reviewers
 - `gh pr view` -- check PR status and review comments
 - `gh pr diff` -- review your own changes before submitting
 - `gh issue list` -- cross-reference issues
 - `gh run list` / `gh run view` -- check CI status after pushing
+
+### Firebase CLI (`firebase`)
+Firebase project work. Authenticated as `epciesielski@gmail.com`.
+- `firebase emulators:start` -- local emulator suite for Firestore, Auth, Functions
+- `firebase deploy --only functions` / `--only firestore:rules` -- deploy specific components
+- `firebase firestore:indexes` -- manage Firestore indexes
+- `firebase projects:list` -- verify project configuration
+
+### Google Cloud CLI (`gcloud`)
+GCP service configuration. Authenticated as `epciesielski@gmail.com`.
+- `gcloud services enable` -- enable required APIs
+- `gcloud run deploy` -- deploy Cloud Run services
+- `gcloud firestore databases describe` -- check Firestore configuration
+- `gcloud auth application-default login` -- configure application default credentials
 
 ### Chrome DevTools
 Frontend debugging and validation:
@@ -76,5 +90,5 @@ Each product may use a subset of this stack. Check the product's CLAUDE.md for s
 
 ## Workspace
 
-- **Fallback cwd:** `/home/eric/Team/products/`
-- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/Team/products/flowstate/repo/`). This is where you write code.
+- **Fallback cwd:** `/home/eric/dev/`
+- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/dev/flowstate-saas/`). This is where you write code.

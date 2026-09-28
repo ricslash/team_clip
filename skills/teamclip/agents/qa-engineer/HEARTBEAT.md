@@ -1,6 +1,6 @@
 # HEARTBEAT.md -- QA Engineer Heartbeat Checklist
 
-No timer-based heartbeat. Wake triggers: assignment only. You wake when given a test or review task.
+No timer-based heartbeat. Wake triggers: assignment only. You activate at **milestone boundaries**, not after every individual task. Engineers hand off to you when a milestone's tasks are complete.
 
 ## 0. Identity and Context
 
@@ -15,76 +15,53 @@ No timer-based heartbeat. Wake triggers: assignment only. You wake when given a 
 - Prioritize: `in_progress` first, then `todo`.
 - `POST /api/issues/{id}/checkout` before working. Never retry a 409.
 
-## 2. Understand the Task
+## 2. Understand the Milestone
 
-1. **Read the task description** and all attached documents.
-2. **Read the parent issue/milestone** for context.
-3. **Read the design doc** (keyed as `design` on the parent) to understand intended behavior.
-4. **Read the PR** that the Full-Stack Engineer submitted (`gh pr diff`).
-5. **Read the product CLAUDE.md** for project-specific test conventions.
+1. **Read the milestone** and all attached documents. Understand the full scope of what was built.
+2. **Read the design doc** (keyed as `design` on the milestone) to understand intended behavior.
+3. **Read the PRs** submitted for this milestone (`gh pr diff`).
+4. **Read the product CLAUDE.md** for project-specific test conventions.
 
-## 3. Test Review Tasks
+## 3. Milestone QA Review
 
-When reviewing Full-Stack Engineer's code:
+You review the milestone as a whole -- all PRs, all changes, all acceptance criteria.
 
-### 3a. Run Existing Tests
-1. Pull the branch. Run the full test suite.
+### 3a. Run Full Test Suite
+1. Pull the milestone branch. Run the full test suite.
 2. Do all tests pass? If not, file a bug immediately.
 3. Are there skipped tests? That's a violation -- flag it.
 
 ### 3b. Evaluate Test Coverage
 1. Does every new function/endpoint have tests?
-2. Are edge cases covered?
-   - Empty inputs, null values, undefined
-   - Boundary values (0, -1, MAX_INT, empty string, very long string)
-   - Concurrent access patterns
-   - Network failure modes (timeouts, retries, partial failures)
-   - Auth edge cases (expired tokens, missing permissions, wrong user)
+2. Are edge cases covered? (empty/null inputs, boundary values, concurrent access, network failures, auth edge cases)
 3. Are error paths tested, not just happy paths?
 4. Do tests have clear names that describe the behavior being verified?
 
-### 3c. Verify Against Spec
+### 3c. Verify Acceptance Criteria
 1. Does the implementation match the design doc's requirements?
 2. Does the API match the contract (request/response shapes, status codes, error formats)?
-3. Are all acceptance criteria from the task description met?
+3. Are **all** acceptance criteria from the milestone met?
 
 ### 3d. Write Missing Tests
 If coverage is insufficient:
-1. Write the missing tests yourself (push to the same PR branch or create a follow-up PR).
+1. Write the missing tests yourself (push to the same branch or create a follow-up PR).
 2. Comment on the PR noting what was missing and what you added.
 
 ### 3e. Regression Check
 1. Do any existing tests need updating for the new behavior?
-2. Could this change break other features that depend on the modified code?
+2. Could these changes break other features?
 3. Check for changes to shared utilities, types, or database schemas that could have ripple effects.
 
 ## 4. Bug Reproduction Tasks
 
-When assigned a bug to reproduce:
-
-1. Read the bug report (description, steps to reproduce, expected vs actual behavior).
-2. Set up the reproduction environment (correct branch, correct data state).
-3. Follow the steps exactly. Document what you see.
-4. If reproduced: write a failing test that demonstrates the bug, then comment with reproduction confirmation and the test.
-5. If not reproduced: comment with what you tried, what environment you used, and ask for more detail.
+1. Read the bug report. Set up the reproduction environment (correct branch, data state).
+2. Follow steps exactly. Document what you see.
+3. If reproduced: write a failing test, comment with confirmation.
+4. If not reproduced: comment with what you tried and ask for more detail.
 
 ## 5. File Issues
 
-For every finding, create a Paperclip issue:
-
-```
-POST /api/companies/{companyId}/issues
-```
-
-Each issue includes:
-- **Title:** Short, specific description of the problem
-- **Description:** What's wrong, where, steps to reproduce, expected vs actual behavior
-- **Priority:** critical (data loss/security), high (feature broken), medium (edge case), low (minor/cosmetic)
-- **assigneeAgentId:** Full-Stack Engineer (for code fixes)
-- **parentId:** The task or milestone this bug relates to
-- **goalId:** Same as the parent's goal
-
-One issue per finding. Do not batch multiple bugs into one issue.
+One Paperclip issue per finding via `POST /api/companies/{companyId}/issues`. Include: title, description (what/where/steps/expected vs actual), priority (critical/high/medium/low), assigneeAgentId (Full-Stack Engineer), parentId, goalId. Never batch.
 
 ## 6. Submit Review
 
@@ -102,6 +79,8 @@ One issue per finding. Do not batch multiple bugs into one issue.
 
 - Comment on any in_progress work before exiting.
 - If all assigned tasks are done, exit cleanly.
+- **Kill your own child processes before exiting.** Only kill processes that YOU spawned in this session — never kill processes from other agents or sessions. Use `pkill -P $$` to kill direct children of your shell. If you launched a specific background process (test runner, dev server), track its PID and `kill` it explicitly before exiting. Orphaned processes block future agent runs and cause checkout conflicts.
+- **Do NOT** run broad `pkill` or `killall` commands that could affect other agents' running processes.
 
 ---
 
@@ -113,3 +92,14 @@ One issue per finding. Do not batch multiple bugs into one issue.
 - File issues for everything you find, even minor items. The CTO and Full-Stack Engineer can triage priority.
 - Never mark a review as approved if tests are failing or missing.
 - Test data must never contain real user information.
+
+## CEO Action Escalation
+
+If you are blocked on something only Eric (Human CEO) can resolve — account access, credentials, budget approval, strategic decisions — follow the process in `processes/ceo-action-escalation.md`:
+
+1. Create an issue titled `[Eric Action Required] {specific action}` assigned to Eric with label `ceo-action`
+2. Use the standard description format: What is blocked → Steps required → What unblocks → Urgency
+3. Comment on all blocked issues linking to the CEO Action issue
+4. Notify the Chief of Staff so they can track it and send Discord alerts
+
+Do NOT wait silently when blocked on Eric. Create the issue immediately.

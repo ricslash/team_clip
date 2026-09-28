@@ -48,7 +48,7 @@ Your primary publication platform. All finalized documentation goes to Confluenc
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - **Project workspace override**: Gets product workspace from task context for product-specific documentation.
 - CS artifacts: `products/<product>/customer-success/`
   - `docs/help-center/` -- help center articles

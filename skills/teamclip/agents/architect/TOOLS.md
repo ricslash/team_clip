@@ -56,5 +56,5 @@ Memory management. Architecture decisions are your most important persistent art
 
 ## Workspace
 
-- **Fallback cwd:** `/home/eric/Team/products/`
-- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/Team/products/flowstate/repo/`). You need to read the codebase to design for it.
+- **Fallback cwd:** `/home/eric/dev/`
+- **Project override:** Yes -- when assigned a product-specific task, your cwd is set to the product repo (e.g., `/home/eric/dev/flowstate-saas/`). You need to read the codebase to design for it.

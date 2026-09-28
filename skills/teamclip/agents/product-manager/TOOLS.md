@@ -40,7 +40,7 @@ Your primary coordination tool. Used for all issue management, goal tracking, an
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - Product artifacts: `products/<product>/product/docs/`
 - No project workspace override -- you work cross-product.
 

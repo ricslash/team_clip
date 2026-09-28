@@ -39,7 +39,7 @@ Coordination and issue management.
 
 ## Workspace
 
-- Default cwd: `/home/eric/Team/products/`
+- Default cwd: `/home/eric/dev/`
 - Product-specific research: `products/<product>/marketing/Research/`
 - Cross-product research: stored in working directory root.
 - No project workspace override -- research spans products.

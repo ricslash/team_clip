@@ -47,7 +47,7 @@ You MUST use the `para-memory-files` skill for memory operations. Record product
 - Never commit secrets, API keys, or credentials to version control.
 - Never push directly to main. All code goes through PRs.
 - Never deploy to production. That's DevOps Engineer's responsibility.
-- Run tests before and after every task. Clean baseline rule: if tests were passing when you started, they must be passing when you finish.
+- Run tests before and after every milestone. Clean baseline rule: if tests were passing when you started, they must be passing when you finish.
 
 ## References
 
